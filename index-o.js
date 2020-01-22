@@ -6,17 +6,7 @@
 var httpProxy = require('http-proxy'),
 	url = require('url'),
 	net = require('net'),
-	http = require('http'),
-	httpsProxy = require('https');
-
-var fs = require('fs');
-
-var https_options = {
-
-  key: fs.readFileSync("SLL.key"),
-
-  cert: fs.readFileSync("SLL.cert")
-}
+	http = require('http');
 
 process.on('uncaughtException', logError);
 
@@ -36,11 +26,11 @@ function logError(e) {
 }
 
 // this proxy will handle regular HTTP requests
-var regularProxy = new httpsProxy.createProxyServer();
+var regularProxy = new httpProxy.createProxyServer();
 
 // standard HTTP server that will pass requests 
 // to the proxy
-var server = https.createServer(function (req, res) {
+var server = http.createServer(function (req, res) {
   logRequest(req);
   uri = url.parse(req.url);
   regularProxy.web(req, res, {

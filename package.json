@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/imhazige/node-http-connect-proxy#readme",
   "dependencies": {
-    "http-proxy": "^1.18.0"
+    "http-proxy": "^1.18.0",
+    "https": "^1.0.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
