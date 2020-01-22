@@ -11,7 +11,7 @@ server.on('close', () => {
   console.log('Client Disconnected');
 });
 server.listen(process.env.PORT || 80, () => {
-  console.log('Server runnig at http://localhost:' + process.env.PORT || 80);
+  console.log('Server running at http://localhost:' + process.env.PORT || 80);
 });
 
 server.on('connection', (clientToProxySocket) => {
