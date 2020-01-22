@@ -1,1 +1,1 @@
-worker: node proxy.js
+worker: node index.js
