@@ -45,7 +45,7 @@ var server = https.createServer(function (req, res) {
   uri = url.parse(req.url);
   regularProxy.web(req, res, {
   	host: uri.hostname,
-  	port: uri.port || 80
+  	port: uri.port || 443
   });
 });
 
