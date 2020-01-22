@@ -54,6 +54,5 @@ server.on('connect', function(req, socket, head) {
 		conn.pipe(socket);
 	});
 });
-
-const port = process.env.PORT || 80;
+var port = process.env.PORT;
 server.listen(port);
