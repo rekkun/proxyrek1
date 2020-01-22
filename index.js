@@ -1,63 +1,59 @@
-const net = require('net');
-const server = net.createServer();
-server.on('connection', (clientToProxySocket) => {
-  console.log('Client Connected To Proxy');
-});
-server.on('error', (err) => {
-  console.log('SERVER ERROR');
-  console.log(err);
-});
-server.on('close', () => {
-  console.log('Client Disconnected');
-});
-server.listen(process.env.PORT || 80, () => {
-  console.log('Server running at http://localhost:' + process.env.PORT || 80);
-});
+// HTTP forward proxy server that can also proxy HTTPS requests
+// using the CONNECT method
 
-server.on('connection', (clientToProxySocket) => {
-  console.log('Client Connected To Proxy');
-  // We need only the data once, the starting packet
-  clientToProxySocket.once('data', (data) => {
-    let isTLSConnection = data.toString().indexOf('CONNECT') !== -1;
-  
-    //Considering Port as 80 by default 
-    let serverPort = 80;
-    let serverAddress;
-    if (isTLSConnection) {
-      // Port changed to 443, parsing the host from CONNECT 
-      serverPort = 443;
-      serverAddress = data.toString()
-                          .split('CONNECT ')[1]
-                          .split(' ')[0].split(':')[0];
-    } else {
-       // Parsing HOST from HTTP
-       serverAddress = data.toString()
-                           .split('Host: ')[1].split('\r\n')[0];
-    }
-    let proxyToServerSocket = net.createConnection({
-      host: serverAddress,
-      port: serverPort
-    }, () => {
-      console.log('PROXY TO SERVER SET UP');
-      
-      if (isTLSConnection) {
-        //Send Back OK to HTTPS CONNECT Request
-        clientToProxySocket.write('HTTP/1.1 200 OK\r\n\n');
-      } else {
-        proxyToServerSocket.write(data);
-      }
-      // Piping the sockets
-      clientToProxySocket.pipe(proxyToServerSocket);
-      proxyToServerSocket.pipe(clientToProxySocket);
-      
-      proxyToServerSocket.on('error', (err) => {
-        console.log('PROXY TO SERVER ERROR');
-        console.log(err);
-      });
-    });
-    clientToProxySocket.on('error', err => {
-      console.log('CLIENT TO PROXY ERROR');
-      console.log(err);
-    });
+// requires https://github.com/nodejitsu/node-http-proxy
+
+var httpProxy = require('http-proxy'),
+	url = require('url'),
+	net = require('net'),
+	http = require('http');
+
+process.on('uncaughtException', logError);
+
+function truncate(str) {
+	var maxLength = 64;
+	return (str.length >= maxLength ? str.substring(0,maxLength) + '...' : str);
+}
+
+function logRequest(req) {
+	console.log(req.method + ' ' + truncate(req.url));
+	for (var i in req.headers)
+		console.log(' * ' + i + ': ' + truncate(req.headers[i]));
+}
+
+function logError(e) {
+	console.warn('*** ' + e);
+}
+
+// this proxy will handle regular HTTP requests
+var regularProxy = new httpProxy.createProxyServer();
+
+// standard HTTP server that will pass requests 
+// to the proxy
+var server = http.createServer(function (req, res) {
+  logRequest(req);
+  uri = url.parse(req.url);
+  regularProxy.web(req, res, {
+  	host: uri.hostname,
+  	port: uri.port || 80
   });
 });
+
+// when a CONNECT request comes in, the 'connect'
+// event is emitted
+server.on('connect', function(req, socket, head) {
+	logRequest(req);
+	// URL is in the form 'hostname:port'
+	var parts = req.url.split(':', 2);
+	// open a TCP connection to the remote host
+	var conn = net.connect(parts[1], parts[0], function() {
+		// respond to the client that the connection was made
+		socket.write("HTTP/1.1 200 OK\r\n\r\n");
+		// create a tunnel between the two hosts
+		socket.pipe(conn);
+		conn.pipe(socket);
+	});
+});
+
+const port = process.env.PORT || 80;
+server.listen(port);
