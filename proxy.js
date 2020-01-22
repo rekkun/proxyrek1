@@ -10,9 +10,8 @@ server.on('error', (err) => {
 server.on('close', () => {
   console.log('Client Disconnected');
 });
-var PORT = process.env.PORT || 80;
-server.listen(PORT, () => {
-  console.log('Server runnig at http://localhost:' + PORT);
+server.listen(process.env.PORT || 80, () => {
+  console.log('Server runnig at http://localhost:' + process.env.PORT || 80);
 });
 
 server.on('connection', (clientToProxySocket) => {
