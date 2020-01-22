@@ -54,5 +54,5 @@ server.on('connect', function(req, socket, head) {
 		conn.pipe(socket);
 	});
 });
-var port = process.env.PORT;
+var port = process.env.PORT || 80;
 server.listen(port);
