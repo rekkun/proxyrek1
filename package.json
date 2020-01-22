@@ -5,6 +5,7 @@
    "main": "proxy.js",
    "scripts": {
       "worker": "node proxy.js"
+	  "start": "node index.js"
    },
    "keywords": [],
    "author": "",
