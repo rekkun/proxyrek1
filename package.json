@@ -2,9 +2,9 @@
    "name": "my_package",
    "description": "",
    "version": "1.0.0",
-   "main": "main.js",
+   "main": "proxy.js",
    "scripts": {
-      "worker": "node main.js"
+      "worker": "node proxy.js"
    },
    "keywords": [],
    "author": "",
