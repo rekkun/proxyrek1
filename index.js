@@ -8,6 +8,7 @@ var http = require("http");
 var url = require("url");
 var net = require('net');
 
+var port_heroku = process.env.PORT || 80;
 var server = http.createServer(function (req, res) {
   var urlObj = url.parse(req.url);
   var target = urlObj.protocol + "//" + urlObj.host;
@@ -19,7 +20,7 @@ var server = http.createServer(function (req, res) {
     console.log("proxy error", err);
     res.end();
   });
-	var port_heroku = process.env.PORT || 80;
+	
   proxy.web(req, res, {target: target});
 }).listen(port_heroku);  //this is the port your clients will connect to
 
