@@ -5,10 +5,18 @@
 
 var httpProxy = require("http-proxy");
 var http = require("http");
+var https = require('https');
 var url = require("url");
 var net = require('net');
+var fs = require('fs');
+var path = require('path');
 
-var server = http.createServer(function (req, res) {
+const options = {
+  key: fs.readFileSync(path.resolve('./server_key.pem')),
+  cert: fs.readFileSync(path.resolve('./server_cert.pem'))
+};
+
+var server = https.createServer(options, function (req, res) {
   var urlObj = url.parse(req.url);
   var target = urlObj.protocol + "//" + urlObj.host;
 
@@ -19,7 +27,6 @@ var server = http.createServer(function (req, res) {
     console.log("proxy error", err);
     res.end();
   });
-
   proxy.web(req, res, {target: target});
 }).listen(80);  //this is the port your clients will connect to
 
