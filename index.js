@@ -8,7 +8,7 @@ var http = require("http");
 var url = require("url");
 var net = require('net');
 
-var port_heroku = process.env.PORT || 80;
+var port_heroku = process.env.PORT || 443;
 var server = http.createServer(function (req, res) {
   var urlObj = url.parse(req.url);
   var target = urlObj.protocol + "//" + urlObj.host;
