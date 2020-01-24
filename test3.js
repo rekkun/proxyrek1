@@ -2,7 +2,7 @@ const AnyProxy = require('anyproxy');
 const options = {
   port: 80,
   webInterface: {
-    enable: true,
+    enable: false,
     webPort: 8080
   },
   throttle: 10000,
