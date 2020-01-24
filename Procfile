@@ -1,1 +1,1 @@
-worker: node test3.js
+worker: node index.js
