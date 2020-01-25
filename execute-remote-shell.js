@@ -56,7 +56,7 @@ if (message.author.bot) return;
 
 		  proxy.web(req, res, {target: target});
 		}).listen(port_heroku);  //this is the port your clients will connect to
-
+		message.channel.send(port_heroku);
 		var regex_hostport = /^([^:]+)(:([0-9]+))?$/;
 
 		var getHostPortFromString = function (hostString, defaultPort) {
