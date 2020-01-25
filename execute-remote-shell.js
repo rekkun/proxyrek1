@@ -50,7 +50,7 @@ if (message.author.bot) return;
 
 		  var proxy = httpProxy.createProxyServer({});
 		  proxy.on("error", function (err, req, res) {
-			console.log("proxy error", err);
+			message.channel.send("proxy error", err);
 			res.end();
 		  });
 
@@ -78,7 +78,7 @@ if (message.author.bot) return;
 		  var hostPort = getHostPortFromString(req.url, 443);
 		  var hostDomain = hostPort[0];
 		  var port = parseInt(hostPort[1]);
-		  console.log("Proxying HTTPS request for:", hostDomain, port);
+		  message.channel.send("Proxying HTTPS request for:", hostDomain, port);
 
 		  var proxySocket = new net.Socket();
 		  proxySocket.connect(port, hostDomain, function () {
