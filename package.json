@@ -31,7 +31,8 @@
     "http-proxy": "^1.18.0",
     "https": "^1.0.0",
     "path": "^0.12.7",
-    "requests": "^0.3.0"
+    "requests": "^0.3.0",
+    "uglify-js": "^3.7.7"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
