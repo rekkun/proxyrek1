@@ -21,7 +21,13 @@ var server = http.createServer(function (req, res) {
     res.end();
   });
 	
-  proxy.web(req, res, {target: target});
+  proxy.web(req, res, {
+	target: target, 
+	ssl: {
+    key: fs.readFileSync('valid-ssl-key.pem', 'utf8'),
+    cert: fs.readFileSync('valid-ssl-cert.pem', 'utf8')
+  }
+  });
 }).listen(port_heroku);  //this is the port your clients will connect to
 
 var regex_hostport = /^([^:]+)(:([0-9]+))?$/;
