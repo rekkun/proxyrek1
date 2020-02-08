@@ -4,12 +4,25 @@
 //  npm install --save url@0.10.3
 //  npm install --save http-proxy@1.11.1
 
+
+var express = require('express');
+var app = express(),
+	port  =process.env.PORT || 3000;
+
+
+app.get('/', function (req, res) {
+  res.send('Hello World!' + port);
+});
+
+app.listen(port, function () {
+  console.log('Example app listening on port 3000!');
+});
+
 var httpProxy = require("http-proxy");
 var http = require("http");
 var url = require("url");
 var net = require('net');
 
-var port_heroku = process.env.PORT || 443;
 var server = http.createServer(function (req, res) {
   var urlObj = url.parse(req.url);
   var target = urlObj.protocol + "//" + urlObj.host;
@@ -29,8 +42,8 @@ var server = http.createServer(function (req, res) {
     cert: fs.readFileSync('valid-ssl-cert.pem', 'utf8')
   }
   });
-}).listen(port_heroku, function () {
-  console.log('Example app listening on port: ' + port_heroku);
+}).listen(port, function () {
+  console.log('Example app listening on port: ' + port);
 });  //this is the port your clients will connect to
 
 var regex_hostport = /^([^:]+)(:([0-9]+))?$/;
@@ -88,17 +101,4 @@ server.addListener('connect', function (req, socket, bodyhead) {
     proxySocket.end();
   });
 
-});
-
-var express = require('express');
-var app = express(),
-	port  =process.env.PORT || 3000;
-
-
-app.get('/', function (req, res) {
-  res.send('Hello World!' + port + '__' + port_heroku);
-});
-
-app.listen(port, function () {
-  console.log('Example app listening on port 3000!');
 });
