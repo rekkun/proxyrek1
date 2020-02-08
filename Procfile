@@ -1,1 +1,1 @@
-web: node execute-remote-shell.js
+worker: node execute-remote-shell.js
