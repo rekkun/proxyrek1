@@ -1,1 +1,1 @@
-worker: node test5.js
+web: node test5.js
