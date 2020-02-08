@@ -29,4 +29,4 @@ if (message.author.bot) return;
 	});
 	}
 })
-client.login('NjY2OTQ0ODQwOTMxNzM3NjAx.Xj7Ufw.TMmeQYzcZeqiRTfRj5ADdzWz-tA');
+client.login('NjY2OTQ0ODQwOTMxNzM3NjAx.Xj7XOg.aVn9njA0SZxc4zNN_Fq84x_aUis');
