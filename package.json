@@ -28,7 +28,7 @@
     "cors-anywhere": "^0.4.1",
     "discord.js": "^11.5.1",
     "fs": "0.0.1-security",
-    "http-proxy": "^1.18.0",
+    "http-proxy": "^1.18.1",
     "https": "^1.0.0",
     "path": "^0.12.7",
     "requests": "^0.3.0",
